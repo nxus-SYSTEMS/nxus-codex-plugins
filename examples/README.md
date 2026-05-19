@@ -9,7 +9,7 @@ These examples show how to use `nxusKit Celerat` with Codex. They are not a repl
 
 ## Task Recipes
 
-The task recipes cover the public `v0.9.4-20260520` Celerat release surface:
+The task recipes cover the public `v0.9.4-20260522` Celerat release surface:
 
 - [Streaming chat in Rust](./codex-task-recipes/01-streaming-rust.md)
 - [Structured JSON output in Python](./codex-task-recipes/02-structured-json-python.md)

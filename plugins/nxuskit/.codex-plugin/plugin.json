@@ -1,6 +1,6 @@
 {
   "name": "nxuskit",
-  "version": "0.9.4-20260520",
+  "version": "0.9.4-20260522",
   "description": "Accelerate nxusKit integrations for LLMs, reasoning, hybrid AI workflows, CLI/Bash prototypes, and public-safe local intelligence patterns.",
   "author": {
     "name": "nxus.SYSTEMS LLC",
