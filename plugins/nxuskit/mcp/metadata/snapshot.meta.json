@@ -1,14 +1,14 @@
 {
-  "content_hash": "3a52a6fb6a03387b6f960656ef77b1e9560e772d5fea20a8b83f89e2d636948b",
-  "generation_timestamp": "2026-05-19T21:55:36.216879+00:00",
+  "content_hash": "d6a35cc0ec9a4742f0773439ec027e47e4823e0d20a9d07f1d0188eb1f65185f",
+  "generation_timestamp": "2026-05-19T22:23:09.565429+00:00",
   "generator_version": "1.0.0",
-  "identifier": "2026-05-19T21:55:36.216879+00:00+nxuskit-examples@4c8713c1af79",
-  "plugin_version": "0.9.4-20260520",
+  "identifier": "2026-05-19T22:23:09.565429+00:00+nxuskit-examples@3fe465155678",
+  "plugin_version": "0.9.4-20260522",
   "source_files": [
     "example-groups.json",
     "example_smoke_matrix.json",
     "examples_manifest.json",
     "recipes-source.yaml"
   ],
-  "source_repo_commit": "4c8713c1af79ffb6d4a331086ac5b59e8496eec5"
+  "source_repo_commit": "3fe46515567805c8b93bfe5e5a484b1699bc1168"
 }
