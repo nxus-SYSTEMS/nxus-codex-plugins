@@ -8,7 +8,7 @@ body:
     id: command
     attributes:
       label: Command
-      placeholder: codex plugin marketplace add nxus-SYSTEMS/nxus-codex-plugins --ref v0.9.4-20260518
+      placeholder: codex plugin marketplace add nxus-SYSTEMS/nxus-codex-plugins --ref v0.9.4-20260520
     validations:
       required: true
   - type: input

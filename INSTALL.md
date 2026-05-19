@@ -1,6 +1,6 @@
 # Install nxusKit Celerat
 
-This repository publishes Codex Plugin packages from nxus.SYSTEMS. The current public plugin is **nxusKit Celerat** `v0.9.4-20260518`.
+This repository publishes Codex Plugin packages from nxus.SYSTEMS. The current public plugin is **nxusKit Celerat** `v0.9.4-20260520`.
 
 ## Requirements
 
@@ -14,7 +14,7 @@ This repository publishes Codex Plugin packages from nxus.SYSTEMS. The current p
 Add the public marketplace at the current release tag:
 
 ```bash
-codex plugin marketplace add nxus-SYSTEMS/nxus-codex-plugins --ref v0.9.4-20260518
+codex plugin marketplace add nxus-SYSTEMS/nxus-codex-plugins --ref v0.9.4-20260520
 ```
 
 Then open the Codex plugin directory and install **nxusKit Celerat** from the `nxus.SYSTEMS Codex Plugins` source.

@@ -3,12 +3,12 @@
   "display_name": "nxusKit Celerat",
   "channel": "public",
   "sdk_baseline": "0.9.4",
-  "release_code": "20260518",
+  "release_code": "20260520",
   "release_code_parity": "even-public",
   "packaged_at": null,
   "examples_snapshot": {
     "source_repo": "nxusKit-examples",
-    "source_repo_commit": "79d4b13a6ef19dea3cd17cd12adcdb5f70d57455",
-    "snapshot_identifier": "2026-05-19T15:21:31.718942+00:00+nxuskit-examples@79d4b13a6ef1"
+    "source_repo_commit": "4c8713c1af79ffb6d4a331086ac5b59e8496eec5",
+    "snapshot_identifier": "2026-05-19T21:55:36.216879+00:00+nxuskit-examples@4c8713c1af79"
   }
 }

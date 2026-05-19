@@ -39,7 +39,7 @@ This plugin helps developers and knowledge-work analysts use nxusKit through Cod
 Install the pinned public release:
 
 ```bash
-codex plugin marketplace add nxus-SYSTEMS/nxus-codex-plugins --ref v0.9.4-20260518
+codex plugin marketplace add nxus-SYSTEMS/nxus-codex-plugins --ref v0.9.4-20260520
 ```
 
 Then install `nxusKit Celerat` from the Codex plugin directory.

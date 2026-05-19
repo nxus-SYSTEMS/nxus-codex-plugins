@@ -105,7 +105,10 @@ The skill MUST prefer typed, explicit `nxuskit-cli` commands over arbitrary shel
 
 ## 6. Example-selection procedure
 
-`references/example-index.md` is the canonical, generated index of nxusKit examples (19 entries). Consult it BEFORE inventing code:
+Use the local MCP example tools when available; the bundled snapshot covers the
+full current examples portfolio. When MCP is unavailable,
+`references/example-index.md` is the generated fallback index for the core 19
+baseline examples. Consult MCP or the fallback index BEFORE inventing code:
 
 1. Identify the user's intent (e.g., "streaming chat with retry").
 2. Look up the matching `name` rows in `example-index.md` (e.g., `streaming` + `retry-fallback`).
@@ -113,7 +116,7 @@ The skill MUST prefer typed, explicit `nxuskit-cli` commands over arbitrary shel
 4. Use the `source_path` as the canonical reference; copy or adapt the pattern rather than inventing a new one.
 5. If the closest entry is `guidance-only` (no canonical example exists yet), state that plainly and degrade gracefully — do not fabricate file paths.
 
-The 19 indexed names: `basic-chat`, `streaming`, `multi-provider`, `capability-detection`, `cost-routing`, `retry-fallback`, `structured-output`, `vision`, `auth-helper`, `clips-basics`, `clips-llm-hybrid`, `bayesian-inference`, `solver`, `solver-what-if`, `llm-solver-hybrid`, `bn-solver-clips-pipeline`, `zen-decisions`, `ruler`, `arbiter`.
+The core fallback names: `basic-chat`, `streaming`, `multi-provider`, `capability-detection`, `cost-routing`, `retry-fallback`, `structured-output`, `vision`, `auth-helper`, `clips-basics`, `clips-llm-hybrid`, `bayesian-inference`, `solver`, `solver-what-if`, `llm-solver-hybrid`, `bn-solver-clips-pipeline`, `zen-decisions`, `ruler`, `arbiter`. The MCP snapshot additionally exposes portfolio examples such as `common-sense-guardrails` and `model-research-harness`.
 
 ---
 

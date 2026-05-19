@@ -12,7 +12,7 @@
 
 This repository publishes public Codex Plugin packages from [nxus.SYSTEMS](https://nxus.systems). The current plugin, **nxusKit Celerat**, helps Codex use the nxusKit SDK and nxusKit Examples to add provider-agnostic LLM integrations, symbolic reasoning, hybrid AI workflows, CLI/Bash prototypes, and public-safe local intelligence patterns to real applications.
 
-**Current public release:** `v0.9.4-20260518`
+**Current public release:** `v0.9.4-20260520`
 
 nxusKit is a multi-language SDK for LLM providers, CLIPS rule engines, Z3 constraint solvers, Bayesian networks, ZEN decision tables, and JSON-first CLI automation. Celerat packages the product knowledge Codex needs to pick the right nxusKit pattern, explain Community vs. Pro boundaries before implementation, discover canonical examples through a bundled local MCP server, and verify changes using the target project's own build or smoke commands.
 
@@ -27,7 +27,7 @@ nxusKit is a multi-language SDK for LLM providers, CLIPS rule engines, Z3 constr
 Add this repository as a Git-backed Codex Plugin marketplace pinned to the current public release:
 
 ```bash
-codex plugin marketplace add nxus-SYSTEMS/nxus-codex-plugins --ref v0.9.4-20260518
+codex plugin marketplace add nxus-SYSTEMS/nxus-codex-plugins --ref v0.9.4-20260520
 ```
 
 Then open the Codex plugin directory and install **nxusKit Celerat** from the `nxus.SYSTEMS Codex Plugins` source.

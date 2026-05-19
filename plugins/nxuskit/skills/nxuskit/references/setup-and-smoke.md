@@ -27,7 +27,12 @@ If the user volunteers a secret in chat, follow the FR-009a protocol: acknowledg
 
 ## Rust
 
-For the canonical, up-to-date Rust setup walkthrough, see the nxusKit SDK getting-started documentation at `https://docs.nxus.systems/sdk/getting-started`.
+For the canonical, up-to-date Rust setup walkthrough, see the nxusKit SDK getting-started documentation at `https://docs.nxus.systems/nxuskit/getting-started/installation/`.
+
+The public Community Edition SDK is distributed from the public
+`nxus-SYSTEMS/nxusKit` GitHub release. GitHub CLI authentication is optional for
+normal public downloads, but useful for CI reliability, higher API limits, and
+entitlement-gated or private assets.
 
 ### Install
 
@@ -52,12 +57,14 @@ export ANTHROPIC_API_KEY=...  # if using Anthropic
 ```
 
 For local providers (Ollama, LM Studio), the URL is the only required setting.
-The nxusKit docs/examples have used both `OLLAMA_BASE_URL` and `OLLAMA_HOST`
-across surfaces; prefer the variable documented by the installed SDK/CLI, and
-fall back to explicit builder/config `base_url` when available.
+Prefer `OLLAMA_HOST=http://127.0.0.1:11434` for local Ollama walkthroughs unless
+the user's installed SDK or project documents a different local-provider setting.
+Older nxusKit docs/examples used `OLLAMA_BASE_URL` or `OLLAMA_API_URL` on some
+surfaces; follow the installed SDK/CLI help and fall back to explicit
+builder/config `base_url` when available.
 
 ```bash
-export OLLAMA_HOST=http://localhost:11434
+export OLLAMA_HOST=http://127.0.0.1:11434
 ```
 
 Do NOT request the user's key in chat (FR-009).
@@ -172,6 +179,27 @@ when the installed CLI supports it. If `provider list` or `provider ping` is
 not present in the installed CLI, treat as guidance-only and recommend the
 user upgrade `nxuskit-cli` or use language-level provider listing.
 
+### Structured output, tool choice, and thinking controls
+
+Current `nxuskit-cli call` inputs may include:
+
+- `response_format`: `{"type":"text"}`, `{"type":"json_object"}`, or
+  `{"type":"json_schema","schema":{...}}`.
+- `tool_definitions` plus `tool_choice`: provider-compatible tool/function
+  schemas and choice policy.
+- `thinking_mode`: `auto`, `enabled`, `disabled`, or `omit`.
+
+Probe `nxuskit-cli call --help` before relying on these fields. If the installed
+CLI does not accept one of them, treat that field as a minimum-version feature
+and fall back to the language SDK or a prompt-only smoke.
+
+Minimal JSON-object smoke:
+
+```bash
+printf '{"prompt":"Return {\"ok\":true} as JSON only.","provider":"loopback","model":"echo","response_format":{"type":"json_object"}}' \
+  | nxuskit-cli call --input - --format json
+```
+
 ### Loopback / local-provider smoke
 
 ```bash
@@ -184,6 +212,15 @@ nxuskit-cli provider ping --provider ollama --json
 # Then run a small already-pulled model if the ping passes:
 printf '{"prompt":"ping","provider":"ollama","model":"llama3.2:latest"}' \
   | nxuskit-cli call --input - --format json
+```
+
+For the `common-sense-guardrails` walkthrough, current examples guidance prefers
+`qwen3.5:4b` when available and `qwen3.5:2b` for lower-resource local runs:
+
+```bash
+export NXUSKIT_PROVIDER=ollama
+export NXUSKIT_MODEL=qwen3.5:4b
+export OLLAMA_HOST=http://127.0.0.1:11434
 ```
 
 The JSON-first `call` command with provider `loopback` and model `echo` is the

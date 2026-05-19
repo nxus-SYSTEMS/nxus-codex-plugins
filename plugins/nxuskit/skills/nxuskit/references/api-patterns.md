@@ -57,14 +57,14 @@ For language-specific setup and credentials, see `setup-and-smoke.md`. For tier 
 
 - **Intent**: receive a response constrained to a JSON schema rather than free-form text.
 - **Canonical example**: `structured-output`.
-- **Shape**: declare a response schema; pass it alongside the prompt; receive a typed object on the response.
+- **Shape**: declare a response schema; pass it alongside the prompt; receive a typed object on the response. In `nxuskit-cli call`, this is surfaced as `response_format` with `text`, `json_object`, or `json_schema` shapes when supported by the installed CLI.
 - **Verification**: validate the parsed response against the declared schema; reject and retry if it does not parse.
 
 ## 8. Tool / function calling (CE)
 
 - **Intent**: let the model call developer-defined functions and consume their output.
 - **Canonical example**: covered as patterns within `structured-output` and `multi-provider`; the SDK exposes a unified tool-call interface.
-- **Shape**: declare tool signatures (name, description, parameter schema); on each model turn, dispatch tool invocations to local functions; feed results back into the conversation.
+- **Shape**: declare tool signatures (name, description, parameter schema); on each model turn, dispatch tool invocations to local functions; feed results back into the conversation. In `nxuskit-cli call`, probe for `tool_definitions` and `tool_choice` support before relying on CLI-driven tool calls.
 - **Capability check**: not all providers/models support tool calling; gate via `capability-detection` before relying on it.
 
 ## 9. Vision / multimodal (CE)
@@ -78,7 +78,7 @@ For language-specific setup and credentials, see `setup-and-smoke.md`. For tier 
 - **Intent**: run a local model for offline use, privacy, or cost control.
 - **Canonical example**: refer to `multi-provider` and the `ollama`/`lmstudio` entries in the examples manifest.
 - **Shape**: configure a local-provider entry pointing at the local URL; use it like any cloud provider.
-- **Credentials**: typically none, just the URL (`OLLAMA_HOST` or the installed SDK's documented local-provider URL setting).
+- **Credentials**: typically none, just the URL. Prefer `OLLAMA_HOST=http://127.0.0.1:11434` for current Ollama examples unless the installed SDK/CLI documents another setting.
 
 ## 11. Auth helper (CE)
 
@@ -131,6 +131,7 @@ For language-specific setup and credentials, see `setup-and-smoke.md`. For tier 
 ## Cross-cutting notes
 
 - **Model IDs change**: avoid hard-coding model IDs (e.g., `gpt-4o-2024-05-13`). Prefer reading the model name from project config, environment, or `capability-detection` / model-discovery output.
+- **Thinking controls are provider-specific**: when the user needs thinking/reasoning policy, use SDK capability detection or probe for `thinking_mode` in the installed `nxuskit-cli call` surface. Do not assume every provider accepts it.
 - **No mock providers in production code**: examples may use mock providers for offline testing; do not ship mocks into the user's application unless they explicitly want them.
 - **Verification before "done"**: every code change should be followed by a verification step from the fallback ladder in `setup-and-smoke.md`. If verification cannot run, say so explicitly.
 - **Keep the user's conventions**: respect existing project lint, format, and test commands. Do not introduce new build infrastructure to support a single integration.
