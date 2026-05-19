@@ -1,0 +1,10 @@
+[project]
+name = "nxuskit-codex-local-provider-starter"
+version = "0.9.4"
+description = "Local-provider starter for nxusKit Codex task recipes."
+requires-python = ">=3.10"
+dependencies = []
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"

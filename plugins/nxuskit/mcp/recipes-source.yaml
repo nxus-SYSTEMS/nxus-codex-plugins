@@ -1,0 +1,390 @@
+# Source-of-truth for public Celerat recipes (CLI/Bash + knowledge-work).
+#
+# This file is hand-authored and validated by the metadata generator.
+# The generator (`scripts/generate-mcp-metadata.py`) merges these recipes into
+# `plugins/nxuskit/mcp/metadata/snapshot.json`.
+#
+# Authoring rules (FR-015 + FR-018 + FR-023):
+# - No recipe instructs the user to paste secrets, API keys, tokens, or PHI
+#   into chat. Credentials live in env vars / the credential store / the CLI
+#   auth helpers — never in chat.
+# - Every recipe has a real, smallest-safe smoke_command for the current
+#   nxuskit-cli surface.
+# - phi-sensitive recipes MUST set redaction_boundary.mode = "schema_level"
+#   and declare every passthrough field as a correlation_handle (FR-023a).
+# - Every knowledge-work output is framed as an expert-review draft (FR-018).
+#
+# Recipe IDs use prefixes to keep the lane clear:
+#   cli-*  CLI/Bash recipes that prototype against nxuskit-cli before SDK code.
+#   kw-*   Knowledge-work recipes (developer + non-developer audiences).
+
+recipes:
+
+  # ==========================================================================
+  # Phase 5 — CLI/Bash recipes (US2)
+  # ==========================================================================
+
+  - id: cli-license-status-probe
+    name: License status JSON probe
+    description: >-
+      The smallest-safe CLI smoke: confirm the user's nxuskit-cli is on PATH,
+      authenticated, and returning a parseable JSON status block. Run this
+      first before any other CLI/Bash recipe; if it fails, no SDK code change
+      will succeed either. JSON-first so downstream Bash/jq pipelines compose.
+    audience_tags: [developer, cli-automation]
+    workflow_tags: []
+    tier: community
+    languages: [bash]
+    required_inputs: []
+    expected_output_schema:
+      type: object
+      required: [edition, license_state]
+      properties:
+        edition:
+          type: string
+          enum: [community, pro]
+        license_state:
+          type: string
+        days_remaining:
+          type: ["integer", "null"]
+    smoke_command: "nxuskit-cli license status --json | jq '{edition: .license.effective_edition, license_state: .license.status, days_remaining: .license.token.days_remaining}'"
+    verification_command: null
+    requires_cli_at_least: null
+    redaction_boundary:
+      mode: passthrough
+      schema_level_allowlist: []
+    correlation_handles: []
+    references: [auth-helper]
+    safety_notes:
+      - >-
+        If license status reports a network error, do NOT paste the full error
+        into chat — it can include tokens. Re-run with --json and share only
+        the structured fields.
+
+  - id: cli-provider-list-status
+    name: Provider failover inventory + status
+    description: >-
+      Enumerate configured providers and normalize their auth/config state via
+      JSON for provider failover prototypes. Pipe `provider list --json` into
+      `jq`, then use provider-specific `provider ping --provider <id> --json`
+      reachability probes only for candidates that need a live local endpoint
+      — all in Bash, before any SDK code change.
+    audience_tags: [developer, cli-automation]
+    workflow_tags: []
+    tier: community
+    languages: [bash]
+    required_inputs: []
+    expected_output_schema:
+      type: object
+      required: [providers]
+      properties:
+        providers:
+          type: array
+          items:
+            type: object
+            required: [id, configured]
+            properties:
+              id: { type: string }
+              configured: { type: boolean }
+              reachable: { type: ["boolean", "null"] }
+              auth_state: { type: ["string", "null"] }
+    smoke_command: "nxuskit-cli provider list --json | jq '{providers: .result.providers | map({id: .name, configured: (.auth_status != \"not_configured\"), reachable: null, auth_state: .auth_status})}'"
+    verification_command: nxuskit-cli provider list --json
+    requires_cli_at_least: null
+    redaction_boundary:
+      mode: passthrough
+      schema_level_allowlist: []
+    correlation_handles: []
+    references: [retry-fallback, multi-provider]
+    safety_notes:
+      - Provider listings may surface organization-internal endpoint URLs; treat the JSON output as project-confidential when sharing.
+
+  - id: cli-local-provider-smoke-ollama
+    name: Local-provider smoke — Ollama
+    description: >-
+      Confirm Ollama is reachable as a local provider via the CLI before any
+      cloud round-trip. Use this as the FR-015a probe-first smoke for any
+      PHI-sensitive or local-only workflow that prefers local inference.
+    audience_tags: [developer, cli-automation]
+    workflow_tags: [local-only]
+    tier: community
+    languages: [bash]
+    required_inputs:
+      - name: model_id
+        type: string
+        description: Ollama model identifier already pulled locally (e.g., `llama3:8b`).
+        required: true
+    expected_output_schema:
+      type: object
+      required: [provider, reachable]
+      properties:
+        provider:
+          type: string
+          const: ollama
+        reachable:
+          type: boolean
+        latency_ms:
+          type: ["number", "null"]
+        error:
+          type: ["string", "null"]
+    smoke_command: "nxuskit-cli provider ping --provider ollama --json || true"
+    verification_command: null
+    requires_cli_at_least: null
+    redaction_boundary:
+      mode: passthrough
+      schema_level_allowlist: []
+    correlation_handles: []
+    references: [multi-provider, capability-detection]
+    safety_notes:
+      - This recipe never sends prompt content; it only checks provider reachability. Do not paste prompt text into chat.
+      - >-
+        Current CLI note: nxuskit-cli 0.9.3 builds the Ollama provider with the
+        hardcoded localhost default and does not honor `OLLAMA_HOST` in this
+        path. If direct `curl http://localhost:11434/api/tags` succeeds but
+        this CLI ping fails, treat it as an SDK/CLI reachability issue and use
+        `cli-loopback-smoke` for the no-token gate.
+
+  - id: cli-local-provider-smoke-lmstudio
+    name: Local-provider smoke — LM Studio
+    description: >-
+      Confirm LM Studio is reachable as a local provider. Use this as the
+      probe-first smoke when LM Studio is the local fallback for a
+      knowledge-work lane that must not round-trip
+      to a cloud model.
+    audience_tags: [developer, cli-automation]
+    workflow_tags: [local-only]
+    tier: community
+    languages: [bash]
+    required_inputs:
+      - name: server_url
+        type: string
+        description: LM Studio local server URL (default `http://localhost:1234`).
+        required: false
+    expected_output_schema:
+      type: object
+      required: [provider, reachable]
+      properties:
+        provider:
+          type: string
+          const: lmstudio
+        reachable:
+          type: boolean
+        latency_ms:
+          type: ["number", "null"]
+        error:
+          type: ["string", "null"]
+    smoke_command: "nxuskit-cli provider ping --provider lmstudio --json || true"
+    verification_command: null
+    requires_cli_at_least: null
+    redaction_boundary:
+      mode: passthrough
+      schema_level_allowlist: []
+    correlation_handles: []
+    references: [multi-provider, capability-detection]
+    safety_notes:
+      - This recipe never sends prompt content; it only checks provider reachability. Do not paste prompt text into chat.
+
+  - id: cli-loopback-smoke
+    name: nxuskit-cli loopback call smoke
+    description: >-
+      The smallest end-to-end smoke that exercises the full CLI → provider
+      pathway without spending a real model token. Uses the stable JSON-first
+      `nxuskit-cli call` surface with provider `loopback` and model `echo`,
+      then normalizes the response into the small smoke schema.
+    audience_tags: [developer, cli-automation]
+    workflow_tags: []
+    tier: community
+    languages: [bash]
+    required_inputs: []
+    expected_output_schema:
+      type: object
+      required: [ok]
+      properties:
+        ok: { type: boolean }
+        provider: { type: ["string", "null"] }
+        latency_ms: { type: ["number", "null"] }
+    smoke_command: "printf '{\"prompt\":\"hello\",\"provider\":\"loopback\",\"model\":\"echo\"}' | nxuskit-cli call --input - --format json | jq '{ok: (.result.provider == \"loopback\"), provider: .result.provider, latency_ms: .elapsed_ms}'"
+    verification_command: nxuskit-cli license status --json
+    requires_cli_at_least: null
+    redaction_boundary:
+      mode: passthrough
+      schema_level_allowlist: []
+    correlation_handles: []
+    references: [basic-chat, auth-helper]
+    safety_notes:
+      - >-
+        Uses the stable `call` command rather than a hypothetical `loopback`
+        subcommand. Re-run after `nxuskit-cli license sync` if the license
+        state is stale.
+
+  - id: cli-json-recipe-selection
+    name: JSON-first recipe selection demo
+    description: >-
+      Demonstrates the JSON-first prototype pattern: select a recipe by
+      audience tag from the local MCP, then drive the resulting smoke command
+      from Bash with `jq`. The recipe itself is a Bash one-liner that calls
+      `nxuskit-cli license status --json` and pipes through jq to extract a
+      single field — proving that CLI/Bash workflows compose cleanly without
+      SDK code change.
+    audience_tags: [developer, cli-automation]
+    workflow_tags: []
+    tier: community
+    languages: [bash]
+    required_inputs:
+      - name: jq_filter
+        type: string
+        description: A jq filter expression to apply to `nxuskit-cli license status --json`.
+        required: true
+    expected_output_schema:
+      type: object
+      required: [filtered]
+      properties:
+        filtered:
+          description: Whatever the jq filter produces; type-agnostic by design.
+    smoke_command: "nxuskit-cli license status --json | jq '.license.effective_edition'"
+    verification_command: null
+    requires_cli_at_least: null
+    redaction_boundary:
+      mode: passthrough
+      schema_level_allowlist: []
+    correlation_handles: []
+    references: [auth-helper, structured-output]
+    safety_notes:
+      - Choose jq filters that extract structural fields (.edition, .license_state) rather than free-form strings; the latter risks pulling tokens or messages into the output.
+
+  - id: cli-input-output-file-workflow
+    name: File-in / file-out CLI workflow
+    description: >-
+      Read a local input file (a project-confidential prompt, a JSON config,
+      etc.), pass it to nxuskit-cli, and write the result to a local output
+      file — never round-tripping the file contents through chat. Pattern is
+      the precondition for every PHI-sensitive workflow: chat sees the file
+      paths and the structured summary, not the file contents.
+    audience_tags: [developer, cli-automation]
+    workflow_tags: [local-only]
+    tier: community
+    languages: [bash]
+    required_inputs:
+      - name: input_path
+        type: file_path
+        description: Local path to the input file. Must exist before invocation.
+        required: true
+      - name: output_path
+        type: file_path
+        description: Local path to write the result.
+        required: true
+    expected_output_schema:
+      type: object
+      required: [input_path, output_path, bytes_written]
+      properties:
+        input_path: { type: string }
+        output_path: { type: string }
+        bytes_written: { type: integer }
+    smoke_command: "nxuskit-cli license status --json"
+    verification_command: null
+    requires_cli_at_least: null
+    redaction_boundary:
+      mode: passthrough
+      schema_level_allowlist: []
+    correlation_handles: []
+    references: [auth-helper]
+    safety_notes:
+      - >-
+        File contents stay on the local filesystem. Do not paste the input
+        file's contents into chat — share only the file path and the
+        structured summary.
+
+  # ==========================================================================
+  # Phase 6 — Knowledge-work recipes (US3)
+  # ==========================================================================
+
+  - id: kw-de-identified-document-analysis
+    name: De-identified document analysis (knowledge-work)
+    description: >-
+      Generic knowledge-work recipe for analysing a de-identified or
+      synthetic document on the local machine. Useful as the entry pattern
+      for non-developer audit workflows that don't carry PHI but still
+      benefit from the supervision pattern (FR-016): Codex selects, the
+      pipeline reads locally, output is structural. Frame all outputs as
+      expert-review drafts (FR-018).
+    audience_tags: [knowledge-work, audit]
+    workflow_tags: [de-identified, local-only]
+    tier: community
+    languages: [bash, python]
+    required_inputs:
+      - name: document_path
+        type: file_path
+        description: Local path to a de-identified or synthetic document.
+        required: true
+      - name: analysis_kind
+        type: string
+        description: Short label for the analysis kind (e.g., "summary", "policy-citations").
+        required: true
+    expected_output_schema:
+      type: object
+      required: [analysis_kind, structural_findings, draft_for_review]
+      properties:
+        analysis_kind: { type: string }
+        structural_findings:
+          type: array
+          items: { type: string }
+        draft_for_review:
+          type: string
+          description: Plain-text draft, framed as expert-review draft.
+    smoke_command: "nxuskit-cli license status --json"
+    verification_command: null
+    requires_cli_at_least: null
+    redaction_boundary:
+      mode: passthrough
+      schema_level_allowlist: []
+    correlation_handles: []
+    references: [structured-output, auth-helper]
+    safety_notes:
+      - All outputs are framed as expert-review drafts; the human reviewer remains the accountable decision-maker.
+      - This public recipe is non-PHI by audience tag; if your document carries PHI, keep it in an approved local workflow and do not paste it into chat.
+
+  - id: kw-decision-support-what-if
+    name: Decision-support what-if (knowledge-work)
+    description: >-
+      Run a structured what-if comparison locally over a small, structured
+      input (configurations, parameter sets, candidate solver runs). Surfaces
+      the supervision pattern for non-PHI decision-support workflows that
+      benefit from the local nxusKit solver. Outputs are framed as
+      expert-review drafts (FR-018).
+    audience_tags: [knowledge-work, decision-support]
+    workflow_tags: [local-only]
+    tier: pro
+    languages: [python, bash]
+    required_inputs:
+      - name: scenario_config_path
+        type: file_path
+        description: Local path to a JSON file describing the what-if scenario.
+        required: true
+    expected_output_schema:
+      type: object
+      required: [scenario_id, comparison_summary, draft_recommendation]
+      properties:
+        scenario_id: { type: string }
+        comparison_summary:
+          type: array
+          items:
+            type: object
+            required: [variant, score]
+            properties:
+              variant: { type: string }
+              score: { type: number }
+        draft_recommendation:
+          type: string
+          description: Plain-text recommendation framed as an expert-review draft.
+    smoke_command: "nxuskit-cli license status --json"
+    verification_command: null
+    requires_cli_at_least: null
+    redaction_boundary:
+      mode: passthrough
+      schema_level_allowlist: []
+    correlation_handles: []
+    references: [solver-what-if, llm-solver-hybrid]
+    safety_notes:
+      - >-
+        Pro-tier feature. Surface the Pro disclosure before invoking. Frame
+        the recommendation as an expert-review draft.

@@ -1,0 +1,7 @@
+{
+  "nxuskit-celerat": {
+    "command": ".venv/bin/python",
+    "args": ["-m", "nxuskit_celerat.mcp"],
+    "cwd": "./mcp"
+  }
+}

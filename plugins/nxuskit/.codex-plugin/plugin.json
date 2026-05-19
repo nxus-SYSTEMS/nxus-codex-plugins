@@ -1,0 +1,56 @@
+{
+  "name": "nxuskit",
+  "version": "0.9.4-20260518",
+  "description": "Accelerate nxusKit integrations for LLMs, reasoning, hybrid AI workflows, CLI/Bash prototypes, and public-safe local intelligence patterns.",
+  "author": {
+    "name": "nxus.SYSTEMS LLC",
+    "url": "https://nxus.systems"
+  },
+  "homepage": "https://nxus.systems/codex-plugins/nxuskit",
+  "repository": "https://github.com/nxus-SYSTEMS/nxus-codex-plugins",
+  "license": "MIT OR Apache-2.0",
+  "keywords": [
+    "llm",
+    "ai",
+    "openai",
+    "claude",
+    "ollama",
+    "clips",
+    "z3",
+    "solver",
+    "bayesian",
+    "reasoning",
+    "rust",
+    "go",
+    "python",
+    "cli",
+    "bash",
+    "mcp",
+    "knowledge-work",
+    "regulated-data"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+    "interface": {
+    "displayName": "nxusKit Celerat",
+    "shortDescription": "Accelerate nxusKit integrations for LLMs, reasoning, hybrid AI, CLI/Bash prototypes, and public-safe local intelligence workflows.",
+    "longDescription": "nxusKit Celerat is a Codex Plugin for implementation acceleration. The v0.9.4 release includes a local read-only MCP server (Python stdio, requires Python 3.11+) that lets Codex discover canonical nxusKit examples and CLI/Bash recipes from a bundled offline metadata snapshot. Skills cover provider-agnostic LLM integration (streaming, structured output, tool calling, vision), CLIPS rules, Bayesian inference, Z3-backed solving, ZEN decision tables, hybrid AI patterns, source-packet workflows, and public-safe regulated-data boundaries. Community-first; Pro disclosure before any Pro-only code.",
+    "developerName": "nxus.SYSTEMS",
+    "category": "Development",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://nxus.systems",
+    "privacyPolicyURL": "https://nxus.systems/privacy",
+    "termsOfServiceURL": "https://nxus.systems/terms",
+      "defaultPrompt": [
+      "Find the smallest nxusKit example or recipe for this repo with setup, smoke steps, and CE/Pro tier.",
+      "Use common-sense-guardrails to add Community CLIPS checks around an LLM recommendation workflow.",
+      "Use model-research-harness to compare model/provider fitness with dry-run scoring before live calls."
+    ],
+    "brandColor": "#6F49C6",
+    "composerIcon": "./assets/icon.png",
+    "logo": "./assets/logo.png"
+  }
+}

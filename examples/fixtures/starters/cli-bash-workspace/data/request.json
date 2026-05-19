@@ -1,0 +1,4 @@
+{
+  "provider": "offline",
+  "prompt": "hello from a JSON-first CLI prototype"
+}

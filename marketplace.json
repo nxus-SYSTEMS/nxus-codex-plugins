@@ -1,0 +1,22 @@
+{
+  "name": "nxus-codex-plugins",
+  "interface": {
+    "displayName": "nxus.SYSTEMS Codex Plugins"
+  },
+  "plugins": [
+    {
+      "name": "nxuskit",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/nxus-SYSTEMS/nxus-codex-plugins.git",
+        "path": "./plugins/nxuskit",
+        "ref": "v0.9.4-20260518"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_USE"
+      },
+      "category": "Development"
+    }
+  ]
+}

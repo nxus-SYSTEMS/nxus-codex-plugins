@@ -1,0 +1,79 @@
+name: Publish to Docs
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "README.md"
+      - "INSTALL.md"
+      - "examples/**"
+      - "scripts/export-to-docs.sh"
+      - ".github/workflows/publish-to-docs.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  publish-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Leak gate
+        run: |
+          set -eu -o pipefail
+          SCAN_PATHS=(README.md INSTALL.md examples scripts/export-to-docs.sh)
+          private_suffix="intern""al"
+          FORBIDDEN_TERMS=(
+            "nxus-codex-plugins-$private_suffix"
+            "nxusKit-$private_suffix"
+            "nxusKit-examples-$private_suffix"
+            "/""Users/"
+            "code""Repos"
+          )
+
+          for term in "${FORBIDDEN_TERMS[@]}"; do
+            HITS=$(grep -R -n "$term" "${SCAN_PATHS[@]}" 2>/dev/null || true)
+            if [ -n "$HITS" ]; then
+              echo "$HITS"
+              echo "::error::Forbidden term '$term' found in docs source."
+              exit 1
+            fi
+          done
+
+      - name: Export docs
+        run: bash scripts/export-to-docs.sh /tmp/nxus-codex-plugin-docs-export
+
+      - name: Push to nxus-docs
+        env:
+          NXUS_DOCS_TOKEN: ${{ secrets.NXUS_DOCS_TOKEN }}
+        run: |
+          set -eu -o pipefail
+
+          if [ -z "${NXUS_DOCS_TOKEN:-}" ]; then
+            echo "::notice::NXUS_DOCS_TOKEN not configured - skipping push."
+            exit 0
+          fi
+
+          REMOTE_URL="https://x-access-token:${NXUS_DOCS_TOKEN}@github.com/nxus-SYSTEMS/nxus-docs.git"
+
+          git clone --depth=1 "$REMOTE_URL" /tmp/nxus-docs-clone
+          cd /tmp/nxus-docs-clone
+
+          mkdir -p src/content/docs/nxuskit/codex-plugin
+          rsync -a --delete \
+            --exclude='.git' \
+            /tmp/nxus-codex-plugin-docs-export/codex-plugin/ \
+            src/content/docs/nxuskit/codex-plugin/
+
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No doc changes to publish."
+            exit 0
+          fi
+
+          git -c user.name="nxusKit Docs Bot" \
+              -c user.email="docs-bot@nxuskit.local" \
+              commit -m "docs(codex-plugin): sync public examples"
+          git push origin main

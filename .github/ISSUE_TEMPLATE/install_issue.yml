@@ -1,0 +1,33 @@
+name: Installation issue
+description: Report trouble adding the marketplace or installing a plugin.
+title: "[Install]: "
+labels:
+  - installation
+body:
+  - type: input
+    id: command
+    attributes:
+      label: Command
+      placeholder: codex plugin marketplace add nxus-SYSTEMS/nxus-codex-plugins --ref v0.9.4-20260518
+    validations:
+      required: true
+  - type: input
+    id: codex-version
+    attributes:
+      label: Codex version
+      placeholder: codex --version
+    validations:
+      required: true
+  - type: textarea
+    id: output
+    attributes:
+      label: Output
+      description: Paste only non-sensitive output.
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Operating system, shell, and any relevant package manager details.

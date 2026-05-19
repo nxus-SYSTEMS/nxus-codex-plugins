@@ -1,0 +1,34 @@
+name: nxusKit tier question
+description: Ask about Community Edition vs. Pro behavior in the nxusKit Codex Plugin.
+title: "[Tier]: "
+labels:
+  - question
+body:
+  - type: textarea
+    id: workflow
+    attributes:
+      label: Workflow
+      description: Describe the nxusKit workflow you are trying to use.
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Chat, streaming, or structured output
+        - Tool calling or vision
+        - Routing, retries, or local providers
+        - CLIPS or Bayesian inference
+        - Solver, what-if analysis, or ZEN
+        - Runtime plugin loading
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: question
+    attributes:
+      label: Question
+      description: Describe what is unclear. Do not include secrets.
+    validations:
+      required: true
