@@ -1,8 +1,8 @@
 {
-  "content_hash": "d6a35cc0ec9a4742f0773439ec027e47e4823e0d20a9d07f1d0188eb1f65185f",
-  "generation_timestamp": "2026-05-19T22:23:09.565429+00:00",
-  "generator_version": "1.0.0",
-  "identifier": "2026-05-19T22:23:09.565429+00:00+nxuskit-examples@3fe465155678",
+  "content_hash": "c41b0752fa1655c3e26c9834ac57b2ef6814355a09ebec79711e2edc5d74617c",
+  "generation_timestamp": "2026-05-19T22:47:35.461481+00:00",
+  "generator_version": "1.0.1",
+  "identifier": "2026-05-19T22:47:35.461481+00:00+nxuskit-examples@3fe465155678",
   "plugin_version": "0.9.4-20260522",
   "source_files": [
     "example-groups.json",
