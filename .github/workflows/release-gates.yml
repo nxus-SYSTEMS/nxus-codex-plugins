@@ -1,0 +1,123 @@
+name: Release Gates
+
+on:
+  pull_request:
+    branches: ["main"]
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  release-gates:
+    name: release-gates
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - uses: actions/setup-node@v4
+        if: ${{ hashFiles('scripts/validate-manifest.sh') != '' }}
+        with:
+          node-version: "22"
+
+      - name: Validate release metadata
+        run: |
+          set -euo pipefail
+
+          python3 -m json.tool plugins/nxuskit/.codex-plugin/plugin.json >/dev/null
+          python3 -m json.tool plugins/nxuskit/.mcp.json >/dev/null
+          python3 -m json.tool plugins/nxuskit/release.json >/dev/null
+          python3 -m json.tool plugins/nxuskit/mcp/metadata/snapshot.meta.json >/dev/null
+
+          version="$(jq -r '.version' plugins/nxuskit/.codex-plugin/plugin.json)"
+          sdk_baseline="$(jq -r '.sdk_baseline' plugins/nxuskit/release.json)"
+          release_code="$(jq -r '.release_code' plugins/nxuskit/release.json)"
+          snapshot_version="$(jq -r '.plugin_version' plugins/nxuskit/mcp/metadata/snapshot.meta.json)"
+          marketplace_ref="$(jq -r '.plugins[0].source.ref' marketplace.json 2>/dev/null || true)"
+
+          test "${version}" = "${sdk_baseline}-${release_code}"
+          test "${snapshot_version}" = "${version}"
+          [[ "${release_code}" =~ ^[0-9]{8}$ ]]
+          release_day="${release_code:6:2}"
+          test $((10#${release_day} % 2)) -eq 0
+
+          if [ -n "${marketplace_ref}" ]; then
+            test "${marketplace_ref}" = "v${version}"
+          fi
+
+      - name: Run internal release gates
+        if: ${{ hashFiles('scripts/validate-release-surface.sh') != '' }}
+        run: |
+          set -euo pipefail
+
+          npm install -g ajv-cli ajv-formats
+
+          bash scripts/validate-release-surface.sh
+          bash scripts/validate-manifest.sh
+          python3 scripts/validate-release-metadata.py
+          bash scripts/publish-to-public.sh --dry-run
+          NXUSKIT_GEN_DATE=2026-05-19 python3 scripts/generate-example-index.py \
+            --manifest plugins/nxuskit/mcp/metadata/snapshot.json \
+            --output plugins/nxuskit/skills/nxuskit/references/example-index.md \
+            --check
+
+          python3 -m venv /tmp/celerat-mcp-venv
+          /tmp/celerat-mcp-venv/bin/python -m pip install --upgrade pip
+          /tmp/celerat-mcp-venv/bin/python -m pip install -e "plugins/nxuskit/mcp[dev]"
+          cd plugins/nxuskit/mcp
+          /tmp/celerat-mcp-venv/bin/python -m pytest tests -q
+
+      - name: Run public release gates
+        if: ${{ hashFiles('scripts/validate-release-surface.sh') == '' }}
+        run: |
+          set -euo pipefail
+
+          test -f plugins/nxuskit/.codex-plugin/plugin.json
+          test -f plugins/nxuskit/mcp/metadata/snapshot.json
+          test ! -e plugins/peeler
+
+          private_suffix="intern""al"
+          test ! -e "plugins/nxuskit-${private_suffix}"
+
+          forbidden_terms=(
+            "nxus-codex-plugins-${private_suffix}"
+            "nxuskit-${private_suffix}"
+            "nxusKit-${private_suffix}"
+            "nxusKit-examples-${private_suffix}"
+            "Medical Coding ""Auditor"
+            "medical-coding-""denial"
+            "kw-medical-""coding"
+            "/""Users/"
+            "code""Repos"
+            "dog""food"
+            "dog""food-notes"
+            "P""RD"
+            "M""RD"
+            "skills-""only"
+            "spec""s/"
+          )
+
+          for term in "${forbidden_terms[@]}"; do
+            if grep -R -I -n \
+              --exclude-dir=.git \
+              --exclude-dir=.github \
+              "$term" . >/tmp/celerat-public-gate-hits 2>/dev/null; then
+              cat /tmp/celerat-public-gate-hits
+              echo "::error::Forbidden public term found: ${term}"
+              exit 1
+            fi
+          done
+
+          if grep -R -I -E -n \
+            --exclude-dir=.git \
+            'v0[.][0-8]([^0-9]|$)|(^|[^0-9])0[.][1-8][.]0([^0-9]|$)' .; then
+            echo "::error::Forbidden stale version reference found"
+            exit 1
+          fi
