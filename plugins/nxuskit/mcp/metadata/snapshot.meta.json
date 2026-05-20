@@ -1,8 +1,8 @@
 {
   "content_hash": "c41b0752fa1655c3e26c9834ac57b2ef6814355a09ebec79711e2edc5d74617c",
-  "generation_timestamp": "2026-05-19T22:47:35.461481+00:00",
+  "generation_timestamp": "2026-05-20T01:02:01.124401+00:00",
   "generator_version": "1.0.1",
-  "identifier": "2026-05-19T22:47:35.461481+00:00+nxuskit-examples@3fe465155678",
+  "identifier": "2026-05-20T01:02:01.124401+00:00+nxuskit-examples@a6df5439f4af",
   "plugin_version": "0.9.4-20260522",
   "source_files": [
     "example-groups.json",
@@ -10,5 +10,5 @@
     "examples_manifest.json",
     "recipes-source.yaml"
   ],
-  "source_repo_commit": "3fe46515567805c8b93bfe5e5a484b1699bc1168"
+  "source_repo_commit": "a6df5439f4af850bb8869ed0660c73f249d8827d"
 }
