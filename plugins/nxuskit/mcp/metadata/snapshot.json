@@ -23,9 +23,12 @@
       ],
       "name": "basic-chat",
       "related": [],
-      "smoke_command": null,
-      "smoke_cwd": null,
-      "smoke_requires": {},
+      "smoke_command": "python3 main.py",
+      "smoke_cwd": "examples/patterns/basic-chat/python",
+      "smoke_requires": {
+        "cloud_llm": true,
+        "needs_token": true
+      },
       "tagline": "Send your first LLM chat message in minutes, then swap providers without touching your application code.",
       "tech_tags": [
         "LLM"
@@ -55,9 +58,12 @@
       ],
       "name": "streaming",
       "related": [],
-      "smoke_command": null,
-      "smoke_cwd": null,
-      "smoke_requires": {},
+      "smoke_command": "python3 main.py",
+      "smoke_cwd": "examples/patterns/streaming/python",
+      "smoke_requires": {
+        "cloud_llm": true,
+        "needs_token": true
+      },
       "tagline": "Stream LLM responses token by token with a unified async interface that works across Claude, OpenAI, and Ollama without changing your code.",
       "tech_tags": [
         "LLM",
@@ -90,9 +96,12 @@
       ],
       "name": "multi-provider",
       "related": [],
-      "smoke_command": null,
-      "smoke_cwd": null,
-      "smoke_requires": {},
+      "smoke_command": "python3 main.py",
+      "smoke_cwd": "examples/patterns/multi-provider/python",
+      "smoke_requires": {
+        "cloud_llm": true,
+        "needs_token": true
+      },
       "tagline": "Run the same prompt across Claude, OpenAI, and Ollama simultaneously using one unified interface that normalizes responses and token usage.",
       "tech_tags": [
         "LLM"
@@ -120,9 +129,12 @@
       ],
       "name": "convenience-api",
       "related": [],
-      "smoke_command": null,
-      "smoke_cwd": null,
-      "smoke_requires": {},
+      "smoke_command": "go run -tags nxuskit .",
+      "smoke_cwd": "examples/patterns/convenience-api/go",
+      "smoke_requires": {
+        "cloud_llm": true,
+        "needs_token": true
+      },
       "tagline": "Skip the boilerplate: call any LLM with a single line, letting nxusKit detect your provider and credentials automatically.",
       "tech_tags": [
         "LLM"
@@ -150,9 +162,12 @@
       ],
       "name": "blocking-api",
       "related": [],
-      "smoke_command": null,
-      "smoke_cwd": null,
-      "smoke_requires": {},
+      "smoke_command": "go run -tags nxuskit .",
+      "smoke_cwd": "examples/patterns/blocking-api/go",
+      "smoke_requires": {
+        "cloud_llm": true,
+        "needs_token": true
+      },
       "tagline": "Call LLMs synchronously from any Rust code \u2014 no async runtime required, no await syntax, no tokio dependency to manage.",
       "tech_tags": [
         "LLM"
@@ -182,9 +197,12 @@
       ],
       "name": "capability-detection",
       "related": [],
-      "smoke_command": null,
-      "smoke_cwd": null,
-      "smoke_requires": {},
+      "smoke_command": "go run -tags nxuskit .",
+      "smoke_cwd": "examples/patterns/capability-detection/go",
+      "smoke_requires": {
+        "cloud_llm": true,
+        "needs_token": true
+      },
       "tagline": "Stop hardcoding model names \u2014 query provider capabilities at runtime and let task requirements drive model selection across any LLM backend.",
       "tech_tags": [
         "LLM"
@@ -216,9 +234,12 @@
       ],
       "name": "cost-routing",
       "related": [],
-      "smoke_command": null,
-      "smoke_cwd": null,
-      "smoke_requires": {},
+      "smoke_command": "python3 main.py",
+      "smoke_cwd": "examples/patterns/cost-routing/python",
+      "smoke_requires": {
+        "cloud_llm": true,
+        "needs_token": true
+      },
       "tagline": "Route every LLM request to the right model for the job, so you stop paying premium prices for economy-grade tasks.",
       "tech_tags": [
         "LLM"
@@ -246,9 +267,12 @@
       ],
       "name": "polymorphic",
       "related": [],
-      "smoke_command": null,
-      "smoke_cwd": null,
-      "smoke_requires": {},
+      "smoke_command": "go run -tags nxuskit .",
+      "smoke_cwd": "examples/patterns/polymorphic/go",
+      "smoke_requires": {
+        "cloud_llm": true,
+        "needs_token": true
+      },
       "tagline": "Swap LLM providers at runtime without touching your application logic \u2014 nxusKit's polymorphic patterns keep your code provider-agnostic from day one.",
       "tech_tags": [
         "LLM"
@@ -280,9 +304,12 @@
       ],
       "name": "retry-fallback",
       "related": [],
-      "smoke_command": null,
-      "smoke_cwd": null,
-      "smoke_requires": {},
+      "smoke_command": "python3 main.py",
+      "smoke_cwd": "examples/patterns/retry-fallback/python",
+      "smoke_requires": {
+        "cloud_llm": true,
+        "needs_token": true
+      },
       "tagline": "Chain multiple LLM providers together so a failed request automatically reroutes to the next available provider without changing your application code.",
       "tech_tags": [
         "LLM"
@@ -314,9 +341,12 @@
       ],
       "name": "structured-output",
       "related": [],
-      "smoke_command": null,
-      "smoke_cwd": null,
-      "smoke_requires": {},
+      "smoke_command": "python3 main.py",
+      "smoke_cwd": "examples/patterns/structured-output/python",
+      "smoke_requires": {
+        "cloud_llm": true,
+        "needs_token": true
+      },
       "tagline": "Stop parsing free-form LLM text \u2014 get typed, validated JSON structs back every time, across every provider.",
       "tech_tags": [
         "LLM"
@@ -346,9 +376,12 @@
       ],
       "name": "timeout-config",
       "related": [],
-      "smoke_command": null,
-      "smoke_cwd": null,
-      "smoke_requires": {},
+      "smoke_command": "python3 main.py",
+      "smoke_cwd": "examples/patterns/timeout-config/python",
+      "smoke_requires": {
+        "cloud_llm": true,
+        "needs_token": true
+      },
       "tagline": "Take control of LLM request timing with per-phase timeout configuration that catches network failures fast without killing long-running streams.",
       "tech_tags": [
         "LLM"
@@ -380,9 +413,12 @@
       ],
       "name": "token-budget",
       "related": [],
-      "smoke_command": null,
-      "smoke_cwd": null,
-      "smoke_requires": {},
+      "smoke_command": "python3 main.py",
+      "smoke_cwd": "examples/patterns/token-budget/python",
+      "smoke_requires": {
+        "cloud_llm": true,
+        "needs_token": true
+      },
       "tagline": "Stop paying for tokens you don't need \u2014 enforce real-time streaming budgets and cancel LLM requests the moment your limit is reached.",
       "tech_tags": [
         "LLM"
@@ -414,9 +450,12 @@
       ],
       "name": "vision",
       "related": [],
-      "smoke_command": null,
-      "smoke_cwd": null,
-      "smoke_requires": {},
+      "smoke_command": "python3 main.py",
+      "smoke_cwd": "examples/patterns/vision/python",
+      "smoke_requires": {
+        "cloud_llm": true,
+        "needs_token": true
+      },
       "tagline": "Send images alongside text to any LLM provider using one consistent API that handles encoding, formatting, and provider differences for you.",
       "tech_tags": [
         "LLM",
@@ -445,8 +484,8 @@
       ],
       "name": "auth-helper",
       "related": [],
-      "smoke_command": null,
-      "smoke_cwd": null,
+      "smoke_command": "go run -tags nxuskit .",
+      "smoke_cwd": "examples/patterns/auth-helper/go",
       "smoke_requires": {},
       "tagline": "Wire up OAuth flows and API key credentials across every provider your app supports, with a single unified auth interface.",
       "tech_tags": [
@@ -480,9 +519,11 @@
       ],
       "name": "solver",
       "related": [],
-      "smoke_command": null,
-      "smoke_cwd": null,
-      "smoke_requires": {},
+      "smoke_command": "python3 main.py",
+      "smoke_cwd": "examples/patterns/solver/python",
+      "smoke_requires": {
+        "needs_pro": true
+      },
       "tagline": "Define variables, add constraints, and solve complex planning problems with Z3 \u2014 without leaving your nxusKit workflow.",
       "tech_tags": [
         "Solver"
@@ -514,8 +555,8 @@
       ],
       "name": "bayesian-inference",
       "related": [],
-      "smoke_command": null,
-      "smoke_cwd": null,
+      "smoke_command": "python3 main.py",
+      "smoke_cwd": "examples/patterns/bayesian-inference/python",
       "smoke_requires": {},
       "tagline": "Run exact and approximate Bayesian inference on real-world diagnostic models using four algorithms and three themed scenarios \u2014 all from a single SDK call.",
       "tech_tags": [
@@ -548,9 +589,11 @@
       ],
       "name": "solver-what-if",
       "related": [],
-      "smoke_command": null,
-      "smoke_cwd": null,
-      "smoke_requires": {},
+      "smoke_command": "python3 main.py",
+      "smoke_cwd": "examples/patterns/solver-what-if/python",
+      "smoke_requires": {
+        "needs_pro": true
+      },
       "tagline": "Explore alternative outcomes without rebuilding your model \u2014 push constraints, solve, compare, and pop back to baseline in one clean pattern.",
       "tech_tags": [
         "Solver"
@@ -580,8 +623,8 @@
       ],
       "name": "ollama",
       "related": [],
-      "smoke_command": null,
-      "smoke_cwd": null,
+      "smoke_command": "cargo run --quiet --bin ollama-example --",
+      "smoke_cwd": "examples/integrations/ollama/rust",
       "smoke_requires": {},
       "tagline": "Run open-source LLMs on your own hardware using the same nxusKit interface you already use for Claude and OpenAI.",
       "tech_tags": [
@@ -610,9 +653,11 @@
       ],
       "name": "lmstudio",
       "related": [],
-      "smoke_command": null,
-      "smoke_cwd": null,
-      "smoke_requires": {},
+      "smoke_command": "go run -tags nxuskit .",
+      "smoke_cwd": "examples/integrations/lmstudio/go",
+      "smoke_requires": {
+        "local_lmstudio": true
+      },
       "tagline": "Run LLM inference on your own machine \u2014 connect nxusKit to LM Studio and prototype without cloud dependencies or API keys.",
       "tech_tags": [
         "LLM"
@@ -642,8 +687,8 @@
       ],
       "name": "alert-triage",
       "related": [],
-      "smoke_command": null,
-      "smoke_cwd": null,
+      "smoke_command": "cargo run --quiet --",
+      "smoke_cwd": "examples/integrations/alert-triage/rust",
       "smoke_requires": {},
       "tagline": "Turn alert noise into prioritized action by letting an LLM classify severity, surface root causes, and recommend remediation steps automatically.",
       "tech_tags": [
@@ -672,9 +717,12 @@
       ],
       "name": "cli-assistant",
       "related": [],
-      "smoke_command": null,
-      "smoke_cwd": null,
-      "smoke_requires": {},
+      "smoke_command": "go run -tags nxuskit .",
+      "smoke_cwd": "examples/integrations/cli-assistant/go",
+      "smoke_requires": {
+        "cloud_llm": true,
+        "needs_token": true
+      },
       "tagline": "Turn plain English into shell commands instantly \u2014 build a streaming CLI assistant that speaks your language and runs in your terminal.",
       "tech_tags": [
         "LLM"
@@ -704,8 +752,8 @@
       ],
       "name": "clips-basics",
       "related": [],
-      "smoke_command": null,
-      "smoke_cwd": null,
+      "smoke_command": "go run -tags nxuskit .",
+      "smoke_cwd": "examples/integrations/clips-basics/go",
       "smoke_requires": {},
       "tagline": "Bring deterministic rule-based logic to your applications by driving the CLIPS inference engine directly through the nxusKit SDK.",
       "tech_tags": [
@@ -738,8 +786,8 @@
       ],
       "name": "clips-llm-hybrid",
       "related": [],
-      "smoke_command": null,
-      "smoke_cwd": null,
+      "smoke_command": "python3 main.py",
+      "smoke_cwd": "examples/integrations/clips-llm-hybrid/python",
       "smoke_requires": {},
       "tagline": "Combine deterministic CLIPS rules with LLM reasoning to build AI pipelines that are both fluent and auditable.",
       "tech_tags": [
@@ -769,8 +817,8 @@
       ],
       "name": "common-sense-guardrails",
       "related": [],
-      "smoke_command": null,
-      "smoke_cwd": null,
+      "smoke_command": "python3 main.py --scenario car-wash --mode mock --stage ce",
+      "smoke_cwd": "examples/integrations/common-sense-guardrails/python",
       "smoke_requires": {},
       "tagline": "Catch plausible but impossible LLM recommendations by turning answers into facts, firing rules, and repairing failures with auditable prompts.",
       "tech_tags": [
@@ -800,8 +848,8 @@
       ],
       "name": "model-research-harness",
       "related": [],
-      "smoke_command": null,
-      "smoke_cwd": null,
+      "smoke_command": "python3 main.py",
+      "smoke_cwd": "examples/integrations/model-research-harness/python",
       "smoke_requires": {},
       "tagline": "Research model fitness with provider-neutral runs, Promptfoo import, deterministic policy checks, Bayesian confidence, and dry-run lifecycle recommendations.",
       "tech_tags": [
@@ -834,9 +882,11 @@
       ],
       "name": "bn-solver-clips-pipeline",
       "related": [],
-      "smoke_command": null,
-      "smoke_cwd": null,
-      "smoke_requires": {},
+      "smoke_command": "go run -tags nxuskit . --scenario bakery",
+      "smoke_cwd": "examples/integrations/bn-solver-clips-pipeline/go",
+      "smoke_requires": {
+        "needs_pro": true
+      },
       "tagline": "Chain probabilistic prediction, constraint optimization, and rule-based safety enforcement into a single production-ready pipeline using one unified SDK.",
       "tech_tags": [
         "CLIPS",
@@ -870,9 +920,11 @@
       ],
       "name": "llm-solver-hybrid",
       "related": [],
-      "smoke_command": null,
-      "smoke_cwd": null,
-      "smoke_requires": {},
+      "smoke_command": "python3 main.py",
+      "smoke_cwd": "examples/integrations/llm-solver-hybrid/python",
+      "smoke_requires": {
+        "needs_pro": true
+      },
       "tagline": "Bridge natural language and constraint solvers \u2014 let an LLM parse human intent, let Z3 find the optimal answer.",
       "tech_tags": [
         "LLM",
@@ -903,8 +955,8 @@
       ],
       "name": "bn-structure-learning",
       "related": [],
-      "smoke_command": null,
-      "smoke_cwd": null,
+      "smoke_command": "python3 main.py",
+      "smoke_cwd": "examples/integrations/bn-structure-learning/python",
       "smoke_requires": {},
       "tagline": "Discover causal structure hidden in your data \u2014 learn Bayesian network topology and parameters directly from CSV observations using Hill-Climb and K2 search algorithms.",
       "tech_tags": [
@@ -937,9 +989,11 @@
       ],
       "name": "zen-decisions",
       "related": [],
-      "smoke_command": null,
-      "smoke_cwd": null,
-      "smoke_requires": {},
+      "smoke_command": "python3 main.py",
+      "smoke_cwd": "examples/integrations/zen-decisions/python",
+      "smoke_requires": {
+        "needs_pro": true
+      },
       "tagline": "Evaluate business decision tables in Go, Rust, and Python using the ZEN engine \u2014 from pricing rules to eligibility checks, with first-hit and collect hit policies.",
       "tech_tags": [
         "ZEN"
@@ -967,8 +1021,8 @@
       ],
       "name": "puzzler",
       "related": [],
-      "smoke_command": null,
-      "smoke_cwd": null,
+      "smoke_command": "go run -tags nxuskit ./cmd sudoku -p easy -a clips",
+      "smoke_cwd": "examples/apps/puzzler/go",
       "smoke_requires": {},
       "tagline": "Compare CLIPS rule-based constraint solving against LLM reasoning side by side, then combine both in a hybrid approach for real puzzle problems.",
       "tech_tags": [
@@ -999,9 +1053,11 @@
       ],
       "name": "racer",
       "related": [],
-      "smoke_command": null,
-      "smoke_cwd": null,
-      "smoke_requires": {},
+      "smoke_command": "go run -tags nxuskit ./cmd race einstein-riddle",
+      "smoke_cwd": "examples/apps/racer/go",
+      "smoke_requires": {
+        "needs_pro": true
+      },
       "tagline": "Race CLIPS rule engines against LLMs on logic puzzles and let the data choose your AI strategy.",
       "tech_tags": [
         "LLM",
@@ -1030,8 +1086,8 @@
       ],
       "name": "riffer",
       "related": [],
-      "smoke_command": null,
-      "smoke_cwd": null,
+      "smoke_command": "go run -tags nxuskit ./cmd/riffer -help",
+      "smoke_cwd": "examples/apps/riffer/go",
       "smoke_requires": {},
       "tagline": "Analyze, score, and transform MIDI and MusicXML sequences using CLIPS rule-based music theory and LLM-powered narrative and transformation.",
       "tech_tags": [
@@ -1063,9 +1119,11 @@
       ],
       "name": "ruler",
       "related": [],
-      "smoke_command": null,
-      "smoke_cwd": null,
-      "smoke_requires": {},
+      "smoke_command": "go run -tags nxuskit ./cmd generate classify adults",
+      "smoke_cwd": "examples/apps/ruler/go",
+      "smoke_requires": {
+        "needs_pro": true
+      },
       "tagline": "Turn plain English into validated CLIPS rules \u2014 describe your business logic, get production-ready expert system code with automatic error correction.",
       "tech_tags": [
         "LLM",
@@ -1096,9 +1154,11 @@
       ],
       "name": "arbiter",
       "related": [],
-      "smoke_command": null,
-      "smoke_cwd": null,
-      "smoke_requires": {},
+      "smoke_command": "go run -tags nxuskit ./cmd -help",
+      "smoke_cwd": "examples/apps/arbiter/go",
+      "smoke_requires": {
+        "needs_pro": true
+      },
       "tagline": "Stop accepting unreliable LLM output \u2014 validate every response against CLIPS rules and retry automatically until your standards are met.",
       "tech_tags": [
         "LLM",
@@ -1314,10 +1374,10 @@
     }
   ],
   "meta": {
-    "content_hash": "d6a35cc0ec9a4742f0773439ec027e47e4823e0d20a9d07f1d0188eb1f65185f",
-    "generation_timestamp": "2026-05-19T22:23:09.565429+00:00",
-    "generator_version": "1.0.0",
-    "identifier": "2026-05-19T22:23:09.565429+00:00+nxuskit-examples@3fe465155678",
+    "content_hash": "c41b0752fa1655c3e26c9834ac57b2ef6814355a09ebec79711e2edc5d74617c",
+    "generation_timestamp": "2026-05-19T22:47:35.461481+00:00",
+    "generator_version": "1.0.1",
+    "identifier": "2026-05-19T22:47:35.461481+00:00+nxuskit-examples@3fe465155678",
     "plugin_version": "0.9.4-20260522",
     "source_files": [
       "example-groups.json",
