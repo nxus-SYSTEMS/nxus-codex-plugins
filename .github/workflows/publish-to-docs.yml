@@ -5,6 +5,7 @@ on:
     branches: ["main"]
     paths:
       - "README.md"
+      - "README.public.md"
       - "INSTALL.md"
       - "examples/**"
       - "scripts/export-to-docs.sh"
@@ -23,7 +24,11 @@ jobs:
       - name: Leak gate
         run: |
           set -eu -o pipefail
-          SCAN_PATHS=(README.md INSTALL.md examples scripts/export-to-docs.sh)
+          if [ -f README.public.md ]; then
+            SCAN_PATHS=(README.public.md INSTALL.md examples scripts/export-to-docs.sh)
+          else
+            SCAN_PATHS=(README.md INSTALL.md examples scripts/export-to-docs.sh)
+          fi
           private_suffix="intern""al"
           FORBIDDEN_TERMS=(
             "nxus-codex-plugins-$private_suffix"

@@ -31,10 +31,15 @@ write_page() {
   } > "$dest"
 }
 
+readme_source="$repo_root/README.public.md"
+if [ ! -f "$readme_source" ]; then
+  readme_source="$repo_root/README.md"
+fi
+
 write_page \
   "Codex Plugin" \
   "Install and use nxusKit Celerat, the nxusKit Codex Plugin." \
-  "$repo_root/README.md" \
+  "$readme_source" \
   "$export_dir/codex-plugin/index.md"
 
 write_page \
